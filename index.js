@@ -1,11 +1,26 @@
 (function () {
   "use strict";
   var jogo = {
-    palavra: "ALURA",
-    estado: 1,
+    palavra: "",
+    estado: 7,
     adivinhado: [],
-    errado: ["B", "J", "K","C"]
+    errado: [],
   };
+
+  var palavras = [
+    "ALURA",
+    "CURSO",
+    "PROGRAMAÇÃO",
+    "JAVASCRIPT",
+    "ORACLE",
+    "EDUCAÇÃO",
+  ];
+
+  //variaveis para guardar o jogo atual
+  var jogo = null;
+
+  //para conferir se ja tem sido enviada uma alerta
+  var finalizado=false
 
   var $html = {
     man: document.getElementById("man"),
@@ -17,21 +32,21 @@
     //Atualizar a imagem do man
     var $elem;
     $elem = $html.man;
-    
-    var estado=jogo.estado
-    if(estado===8){
-      estado=jogo.previo
+
+    var estado = jogo.estado;
+    if (estado === 8 ) {
+      estado = jogo.previo;
     }
 
-
     $elem.src = "./img/estagios/0" + estado + ".png";
+   
 
     //Gerar as letras adivinhadas
     var palavra = jogo.palavra;
     var adivinhado = jogo.adivinhado;
     $elem = $html.adivinhado;
     //Deletamos los elementos anteriores
-    $elem.innerHTML=""
+    $elem.innerHTML = "";
 
     for (let letra of palavra) {
       let $span = document.createElement("span");
@@ -47,7 +62,7 @@
     var errado = jogo.errado;
     $elem = $html.errado;
     //Deletamos los elementos anteriores
-    $elem.innerHTML=""
+    $elem.innerHTML = "";
 
     for (let letra of errado) {
       let $span = document.createElement("span");
@@ -59,7 +74,7 @@
   }
 
   function adivinhar(jogo, letra) {
-    //si ya se ha perdido o ganado ja não tem nada a fazer
+    //Si ya se ha perdido o ganado ja não tem nada a fazer
     let estado = jogo.estado;
     if (estado === 1 || estado === 8) {
       return;
@@ -67,53 +82,90 @@
 
     var adivinhado = jogo.adivinhado;
     var errado = jogo.errado;
-    //se já foi adivinhada ou errada a letra não temos que fazer nada
+    //Se já foi adivinhada ou errada a letra não temos que fazer nada
     if (adivinhado.indexOf(letra) >= 0 || errado.indexOf(letra) >= 0) {
       return;
     }
     var palavra = jogo.palavra;
 
-    //se é letra da palavra
+    //Se é letra da palavra
     if (palavra.indexOf(letra) >= 0) {
       let ganhado = true;
-      //devemos conferir se chegamos ao estado ganhado
+      //Devemos conferir se chegamos ao estado ganhado
       for (let l of palavra) {
         if (adivinhado.indexOf(l) < 0 && l != letra) {
           ganhado = false;
-          jogo.previo=jogo.estado
+          jogo.previo = jogo.estado;
           break;
         }
       }
 
-      //se já tem ganhado, devemos indicarlo
-      if(ganhado){
-            jogo.estado=8
+      //Se já tem ganhado, devemos indicarlo
+      if (ganhado) {
+        jogo.estado = 8;
       }
       //Agregar a letra à lista de palavras adivinhadas
-      adivinhado.push(letra)
-    }else{
-      //se não é letra devemos atualizar o estado para um estado mas cerca da forca. O homem esta mais próximo da forca
-      jogo.estado--
+      adivinhado.push(letra);
+    } else {
+      //Se não é letra devemos atualizar o estado para um estado mas cerca da forca. O homem esta mais próximo da forca
+      jogo.estado--;
 
-      //agregamos a letra, à letra de letras erradas
-      errado.push(letra)
+      //Agregamos a letra, à letra de letras erradas
+      errado.push(letra);
     }
   }
 
- window.onkeypress= function adivinharLetra(e){
-   var letra = e.key 
-   letra=letra.toUpperCase()
-   if(/[^A-Z]/.test(letra)){
-     return
-   }
+  window.onkeypress = function adivinharLetra(e) {
+    var letra = e.key;
+    letra = letra.toUpperCase();
+    if (/[^A-ZÃÇ]/.test(letra)) {
+      return;
+    }
 
-   adivinhar(jogo,letra)
-   desenhar(jogo);
+    adivinhar(jogo, letra);
+    var estado=jogo.estado
+    if(estado===8 && !finalizado){
+      setTimeout(alertVenceu,500)
+      finalizado=true
+
+
+      
+    }else if(estado===1 && !finalizado){
+      // let palavra=jogo.palavra
+      // let fn=alertPerdeu.bind(undefined,palavra)
+      setTimeout(alertPerdeu,500)
+      finalizado=true
+    }
+
+    desenhar(jogo);
+  };
+
+  window.novoJogo = function novoJogo() {
+    var palavra = palavraAleatoria()
+      jogo={}
+      jogo.palavra=palavra
+      jogo.estado = 7
+      jogo.adivinhado = []
+      jogo.errado=[]
+      desenhar(jogo)
+      console.log(jogo)
+    }
   
- }
-  // adivinhar(jogo, "U")
- 
-   //adivinhar(jogo, "R")
- 
-  desenhar(jogo);
-}());
+  function palavraAleatoria() {
+    var index = ~~(Math.floor(Math.random() * palavras.length));
+    return palavras[index]
+  }
+
+  function alertVenceu(){
+    alert("Você Venceu Parabéns...!")
+    
+  }
+
+  function alertPerdeu(){
+    alert("Poxa :( Você  perdeu...! a palavra era:" + jogo.palavra)
+    
+  }
+
+  novoJogo()
+  
+})();
