@@ -21,9 +21,6 @@ img/printTela1.png'/>
 <img align='left' alt='css' src="https://cdn-icons-png.flaticon.com/512/331/331395.png" width='40px'/>
 <img align='left' alt='js' width='40px' src='https://cdn-icons-png.flaticon.com/512/2621/2621342.png'/>
   
-  
-#
-#
 ------  
   
   
