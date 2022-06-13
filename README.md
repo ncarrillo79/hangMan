@@ -6,17 +6,17 @@
 ------
 #
   
-<img align='center' width="800px" src='
-img/printTela1.png'/> 
-<img align='center' width="800px" src='/img/printTela2.png'/>
+<img align='center' width="800px" src='img/printTela1.png'/> 
+
+<img align='center' width="800px" src='/img/printTela2.png'/> 
+
 <img align='center' width="800px" src='/img/printTela3.png'/>
 
   
 
 
 ### lenguajes:
-#
-#  
+
 <img align='left' alt='html' width='40px' src='https://cdn-icons-png.flaticon.com/512/778/778533.png'/>
 <img align='left' alt='css' src="https://cdn-icons-png.flaticon.com/512/331/331395.png" width='40px'/>
 <img align='left' alt='js' width='40px' src='https://cdn-icons-png.flaticon.com/512/2621/2621342.png'/>
